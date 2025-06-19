@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marco Antonio Cruz | Desarrollador Full Stack</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --dark-bg: #2a2a2a;  /* Plomo oscuro */
+            --primary: #e63946;   /* Rojo vibrante */
+            --secondary: #3a3a3a; /* Plomo medio */
+            --text-primary: #f1faee; /* Blanco roto */
+            --text-secondary: #a8a8a8; /* Plomo claro */
+            --highlight: #ff6b6b;  /* Rojo claro */
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            background-color: var(--secondary);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-right: 1px solid rgba(230, 57, 70, 0.2);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .profile-img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 20px rgba(230, 57, 70, 0.3);
+        }
+        
+        .name {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+            text-align: center;
+        }
+        
+        .title {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            text-align: center;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .social-links a {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            color: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .nav-menu {
+            width: 100%;
+            margin-top: auto;
+        }
+        
+        .nav-menu a {
+            display: block;
+            padding: 0.8rem 1rem;
+            color: var(--text-primary);
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-menu a:hover, .nav-menu a.active {
+            background-color: rgba(230, 57, 70, 0.2);
+            color: var(--primary);
+        }
+        
+        .nav-menu i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        /* Main Content */
+        .main-content {
+            padding: 3rem;
+            overflow-y: auto;
+            max-height: 100vh;
+            background-color: var(--dark-bg);
+        }
+        
+        section {
+            margin-bottom: 3rem;
+            max-width: 800px;
+        }
+        
+        section h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            position: relative;
+            display: inline-block;
+        }
+        
+        section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary);
+        }
+        
+        .about-text {
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+        
+        .skill-item {
+            background-color: var(--secondary);
+            padding: 1rem;
+            border-radius: 5px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(230, 57, 70, 0.2);
+        }
+        
+        .skill-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        
+        .education-item {
+            margin-bottom: 1.5rem;
+        }
+        
+        .education-item h3 {
+            color: var(--primary);
+            margin-bottom: 0.3rem;
+        }
+        
+        .education-item p {
+            color: var(--text-secondary);
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+        
+        .project-card {
+            background-color: var(--secondary);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(230, 57, 70, 0.2);
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .project-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            filter: grayscale(30%);
+            transition: filter 0.3s ease;
+        }
+        
+        .project-card:hover .project-image {
+            filter: grayscale(0%);
+        }
+        
+        .project-content {
+            padding: 1.5rem;
+        }
+        
+        .project-content h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .project-content p {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+        
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .tech-tag {
+            background-color: rgba(230, 57, 70, 0.2);
+            color: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .contact-card {
+            background-color: var(--secondary);
+            padding: 1.5rem;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(230, 57, 70, 0.2);
+        }
+        
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .contact-icon {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .contact-text h3 {
+            color: var(--primary);
+            margin-bottom: 0.3rem;
+            font-size: 1rem;
+        }
+        
+        .contact-text p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 992px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                border-right: none;
+                border-bottom: 1px solid rgba(230, 57, 70, 0.2);
+                padding: 1.5rem;
+            }
+            
+            .main-content {
+                max-height: none;
+                padding: 2rem;
+            }
+            
+            .profile-img {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .main-content {
+                padding: 1.5rem;
+            }
+            
+            section {
+                margin-bottom: 2rem;
+            }
+            
+            .skills-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <img src="perfil.jpg" alt="Marco Antonio Cruz" class="profile-img">
+            <h1 class="name">Marco Antonio Cruz</h1>
+            <h1 class="libra-symbol">♎</h1>
+            <p class="title">Desarrollador Full Stack</p>
+
+            <div class="social-links">
+                <a href="https://github.com/Mark-cruz1" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/marco-antonio-cruz-cotacallapa-990543370/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+
+            
+            <nav class="nav-menu">
+                <a href="#about" class="active"><i class="fas fa-user"></i> <strong>Sobre Mí</strong></a>
+                <a href="#skills"><i class="fas fa-code"></i> <strong>Habilidades</strong></a>
+                <a href="#education"><i class="fas fa-graduation-cap"></i> <strong>Educación</strong></a>
+                <a href="#projects"><i class="fas fa-project-diagram"></i> <strong>Proyectos</strong></a>
+                <a href="#contact"><i class="fas fa-envelope"></i> <strong>Contacto</strong></a>
+            </nav>
+        </aside>
+        
+        <main class="main-content">
+            <section id="about">
+                <h2>Sobre Mí</h2>
+                <p class="about-text">
+                    <strong>Soy Marco Antonio y soy estudiante de la Universidad Católica San Pablo. </strong>
+                    Me gusta mucho la programación; disfruto aprender nuevos lenguajes, crear proyectos y resolver problemas a través del código.
+                </p>
+                <p class="about-text">
+                    Fuera del estudio, me encanta la aventura y las actividades al aire libre. Practico ciclismo de montaña, me gusta salir a explorar la naturaleza y también disfruto de la natación. Estas actividades me ayudan a mantener el equilibrio entre lo académico y lo personal.
+                </p>
+                <p class="about-text">
+                    <strong>Soy</strong> bastante abierto en cuanto a gustos musicales. 
+                    Escucho desde música clásica hasta rock, cumbia, electrónica y canciones románticas, según el momento y el estado de ánimo.<br>
+                    También me gustan los videojuegos, sobre todo títulos como Dota 2, PUBG y juegos de aventura. 
+                    Para mí, los videojuegos son una buena forma de distraerse, relajarse y compartir con amigos.
+                </p>
+            </section>
+            
+            <section id="skills">
+                <h2>Habilidades</h2>
+                <div class="skills-grid">
+                    <div class="skill-item">HTML/CSS</div>
+                    <div class="skill-item">JavaScript</div>
+                    <div class="skill-item">Node.js</div>
+                    <div class="skill-item">SQL Server</div>
+                    <div class="skill-item">C#</div>
+                    <div class="skill-item">Java</div>
+                    <div class="skill-item">Python</div>
+                    <div class="skill-item">C++</div>
+                </div>
+            </section>
+            
+            <section id="education">
+                <h2>Educación</h2>
+                <div class="education-item">
+                    <h3>Universidad Católica San Pablo</h3>
+                    <p>Ciencias de la Computación</p>
+                    <p>curso introducción Ciencia de la Computación<br>profesor: <a href="https://www.linkedin.com/in/ecuadrosv/" target="_blank" style="color:black var(--primary); text-decoration: none;"><strong>Dr. Ernesto Cuadros-Vargas</strong></a></p>
+                </div>
+            </section>
+            
+            <section id="projects">
+                <h2>Proyectos</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <img src="https://blog.es.playstation.com/tachyon/sites/14/2018/11/unnamed-file-93.jpg?resize=1088%2C600&crop_strategy=smart&zoom=0.99" alt="Sistema de Biblioteca" class="project-image">
+                        <div class="project-content">
+                            <h3>Juego de Aventura</h3>
+                            <p>Sistema completo para gestión de bibliotecas desarrollado con C#, SQL Server y una interfaz web.</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">Python</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="project-card">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Aplicación de Notas" class="project-image">
+                        <div class="project-content">
+                            <h3>Aplicación de Notas</h3>
+                            <p>Aplicativo de ingreso y registro de notas en una base de dato, muesta registro y promedio</p>
+                            <div class="project-tech">
+                                <span class="tech-tag">SQL Server</span>
+                                <span class="tech-tag">Java</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="contact">
+                <h2>Contacto</h2>
+                <div class="contact-info">
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h3>Email</h3>
+                            <p>marco1accruz@gmail.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h3>Ubicación</h3>
+                            <p>Arequipa, Arequipa, Perú</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <i class="fab fa-instagram"></i>
+                        </div>
+                        <div class="contact-text">
+                            <h3>Instagram</h3>
+                            <p>@marco.antonio.cruz_</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Smooth scrolling for navigation
+        document.querySelectorAll('.nav-menu a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                document.querySelectorAll('.nav-menu a').forEach(link => {
+                    link.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            });
+        });
+        
+        // Highlight active section in navigation
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-menu a');
+            
+            let current = '';
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                
+                if (pageYOffset >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
